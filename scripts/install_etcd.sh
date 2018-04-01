@@ -35,8 +35,8 @@ EOF
     fi
     # Enable and start the service
     systemctl daemon-reload
-	systemctl enable etcd
-	systemctl start etcd
+    systemctl enable etcd
+    systemctl start etcd
 
     # Show status
     systemctl status etcd --no-pager

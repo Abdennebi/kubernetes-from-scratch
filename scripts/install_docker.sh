@@ -29,8 +29,8 @@ EOF
     fi
     # Enable and start the service
     systemctl daemon-reload
-	systemctl enable docker
-	systemctl start docker
+    systemctl enable docker
+    systemctl start docker
 
     # Show status
     systemctl status docker --no-pager
