@@ -97,6 +97,9 @@ EOF
 }
 
 uninstall_worker_components(){
+    kubectl cordon $(hostname)
+    kubectl drain $(hostname) --delete-local-data=true --force=false --ignore-daemonsets=false
+
     if [ -f ${KUBELET_SERVICE} ]; then
         systemctl stop kubelet
         rm ${KUBELET_SERVICE}
