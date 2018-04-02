@@ -5,6 +5,7 @@ set -o pipefail
 ETCD_VERSION="v3.1.12"
 BIN_DIR=/usr/local/bin/
 ETCD_SERVICE=/etc/systemd/system/etcd.service
+ETCD_DATA=/var/lib/etcd/
 
 install_etcd() {
 
@@ -23,7 +24,7 @@ Documentation=https://github.com/coreos/etcd
 
 [Service]
 ExecStart=$BIN_DIR/etcd \
-	--data-dir=/var/lib/etcd
+	--data-dir=${ETCD_DATA}
 Restart=on-failure
 RestartSec=5
 
@@ -46,6 +47,7 @@ uninstall_etcd() {
         systemctl daemon-reload
         rm ${ETCD_SERVICE}
     fi
+    rm -fr ${ETCD_DATA}
     rm -f $BIN_DIR/etcd*
 }
 

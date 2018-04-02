@@ -103,7 +103,9 @@ uninstall_worker_components(){
         rm ${KUBE_PROXY_SERVICE}
     fi
     systemctl daemon-reload
-    
+
+    rm -fr /var/lib/kubelet/
+
     rm -f ${BIN_DIR}/kubelet
     rm -f ${BIN_DIR}/kube-proxy
 

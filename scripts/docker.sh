@@ -40,6 +40,8 @@ uninstall_docker() {
         systemctl daemon-reload
         rm /etc/systemd/system/docker.service
     fi
+    rm -fr /var/run/docker/
+    rm -fr /var/lib/docker/
     rm -f $BIN_DIR/docker*
 }
 
