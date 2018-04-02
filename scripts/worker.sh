@@ -9,6 +9,8 @@ KUBE_CONFIG="/var/lib/kubelet/kubeconfig"
 POD_CLUSTER_IP_RANGE="10.200.0.0/16"
 API_SERVER_URL="http://127.0.0.1:8080"
 CNI_BIN_DIR="/opt/cni/bin"
+KUBELET_SERVICE=/etc/systemd/system/kubelet.service
+KUBE_PROXY_SERVICE=/etc/systemd/system/kube-proxy.service
 
 download_worker_components(){
     local download_uri="https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64"
@@ -40,7 +42,7 @@ EOF
 }
 
 install_kube_proxy(){
-    cat << EOF > /etc/systemd/system/kube-proxy.service
+    cat << EOF > ${KUBE_PROXY_SERVICE}
 [Unit]
 Description=Kubernetes Kube Proxy
 Documentation=https://kubernetes.io/docs/reference/generated/kube-proxy/
@@ -66,7 +68,7 @@ EOF
 }
 
 install_kubelet(){
-    cat << EOF > /etc/systemd/system/kubelet.service
+    cat << EOF > ${KUBELET_SERVICE}
 [Unit]
 Description=Kubernetes Kubelet
 Documentation=https://kubernetes.io/docs/reference/generated/kubelet/
@@ -92,13 +94,16 @@ EOF
 }
 
 uninstall_worker_components(){
-    systemctl stop kubelet
-    systemctl stop kube-proxy
+    if [ -f ${KUBELET_SERVICE} ]; then
+        systemctl stop kubelet
+        rm ${KUBELET_SERVICE}
+    fi
+    if [ -f ${KUBE_PROXY_SERVICE} ]; then
+        systemctl stop kube-proxy
+        rm ${KUBE_PROXY_SERVICE}
+    fi
     systemctl daemon-reload
-
-    rm -f /etc/systemd/system/kubelet.service
-    rm -f /etc/systemd/system/kube-proxy.service
-
+    
     rm -f ${BIN_DIR}/kubelet
     rm -f ${BIN_DIR}/kube-proxy
 

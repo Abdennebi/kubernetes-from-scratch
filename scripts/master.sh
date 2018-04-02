@@ -9,6 +9,9 @@ API_SERVER_URL=http://127.0.0.1:8080
 SERVICE_CLUSTER_IP_RANGE=10.32.0.0/24
 POD_CLUSTER_IP_RANGE=10.200.0.0/16
 SERVICE_ACCOUNT_KEY=/var/lib/kubernetes/kubernetes-key.pem
+API_SERVER_SERVICE=/etc/systemd/system/kube-apiserver.service
+CONTROLLER_MANAGER_SERVICE=/etc/systemd/system/kube-controller-manager.service
+SCHEDULER_SERVICE=/etc/systemd/system/kube-scheduler.service
 
 
 install_service_account_private_key(){
@@ -56,7 +59,7 @@ download_components(){
 }
 
 install_api_server(){
-    cat << EOF > /etc/systemd/system/kube-apiserver.service
+    cat << EOF > ${CONTROLLER_MANAGER_SERVICE}
 [Unit]
 Description=Kubernetes API Server
 Documentation=https://kubernetes.io/docs/reference/generated/kube-apiserver/
@@ -82,7 +85,7 @@ EOF
 }
 
 install_controller_manager(){
-    cat << EOF > /etc/systemd/system/kube-controller-manager.service
+    cat << EOF > ${CONTROLLER_MANAGER_SERVICE}
 [Unit]
 Description=Kubernetes Controller Manager
 Documentation=https://kubernetes.io/docs/reference/generated/kube-controller-manager/
@@ -111,7 +114,7 @@ EOF
 }
 
 install_scheduler(){
-    cat << EOF > /etc/systemd/system/kube-scheduler.service
+    cat << EOF > ${SCHEDULER_SERVICE}
 [Unit]
 Description=Kubernetes Scheduler
 Documentation=https://kubernetes.io/docs/reference/generated/kube-scheduler/
@@ -144,14 +147,28 @@ install_master_components() {
 
 uninstall_master_components(){
 
-    systemctl stop kube-scheduler
-    systemctl stop kube-kube-controller-manager
-    systemctl stop kube-apiserver
+    if [ -f ${API_SERVER_SERVICE} ]; then
+        systemctl stop kube-apiserver
+        rm ${API_SERVER_SERVICE}
+    fi
+
+    if [ -f ${CONTROLLER_MANAGER_SERVICE} ]; then
+        systemctl stop kube-kube-controller-manager
+        rm ${CONTROLLER_MANAGER_SERVICE}
+    fi
+
+    if [ -f ${SCHEDULER_SERVICE} ]; then
+        systemctl stop kube-scheduler
+        rm ${SCHEDULER_SERVICE}
+    fi
+
     systemctl daemon-reload
-    rm -f /var/lib/kubernetes/kubernetes-key.pem
-    rm ${BIN_DIR}/kube-apiserver
-    rm ${BIN_DIR}/kube-controller-manager
-    rm ${BIN_DIR}/kube-scheduler
-    rm ${BIN_DIR}/kubectl
+
+    rm -f ${SERVICE_ACCOUNT_KEY}
+
+    rm -f ${BIN_DIR}/kube-apiserver
+    rm -f ${BIN_DIR}/kube-controller-manager
+    rm -f ${BIN_DIR}/kube-scheduler
+    rm -f ${BIN_DIR}/kubectl
 }
 
