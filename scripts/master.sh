@@ -155,4 +155,3 @@ uninstall_master_components(){
     rm ${BIN_DIR}/kubectl
 }
 
-install_master_components

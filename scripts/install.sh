@@ -1,6 +1,11 @@
 #!/bin/bash
 
-. install_docker.sh
-. install_etcd.sh
-. install_master.sh
-. install_worker.sh
+. docker.sh 
+. etcd.sh
+. master.sh
+. worker.sh
+
+install_docker
+install_etcd
+install_master_components
+install_worker_components

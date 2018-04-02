@@ -120,4 +120,3 @@ install_worker_components(){
     install_kubelet
 }
 
-install_worker_components

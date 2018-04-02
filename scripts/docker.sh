@@ -1,6 +1,4 @@
 #!/bin/bash
-set -e
-set -o pipefail
 
 DOCKER_VERSION="17.03.2"
 BIN_DIR=/usr/local/bin
@@ -45,6 +43,5 @@ uninstall_docker() {
     rm $BIN_DIR/docker*
 }
 
-install_docker
 
 

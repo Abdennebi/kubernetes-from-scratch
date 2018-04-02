@@ -50,4 +50,3 @@ uninstall_etcd() {
     rm $BIN_DIR/etcd*
 }
 
-install_etcd
