@@ -7,6 +7,7 @@ CNI_VERSION="v0.6.0"
 BIN_DIR="/usr/local/bin"
 KUBE_CONFIG="/var/lib/kubelet/kubeconfig"
 POD_CLUSTER_IP_RANGE="10.200.0.0/16"
+POD_NOE_IP_RANGE="10.200.1.0/24"
 API_SERVER_URL="http://127.0.0.1:8080"
 CNI_BIN_DIR="/opt/cni/bin"
 KUBELET_SERVICE=/etc/systemd/system/kubelet.service
@@ -78,7 +79,9 @@ Requires=docker.service
 [Service]
 ExecStart=${BIN_DIR}/kubelet \
 --network-plugin=kubenet \
---kubeconfig=${KUBE_CONFIG}
+--pod-cidr=${POD_NOE_IP_RANGE} \
+--kubeconfig=${KUBE_CONFIG} \
+--fail-swap-on=false
 
 Restart=on-failure
 RestartSec=5
