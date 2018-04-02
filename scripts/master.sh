@@ -59,7 +59,7 @@ download_components(){
 }
 
 install_api_server(){
-    cat << EOF > ${CONTROLLER_MANAGER_SERVICE}
+    cat << EOF > ${API_SERVER_SERVICE}
 [Unit]
 Description=Kubernetes API Server
 Documentation=https://kubernetes.io/docs/reference/generated/kube-apiserver/
@@ -153,7 +153,7 @@ uninstall_master_components(){
     fi
 
     if [ -f ${CONTROLLER_MANAGER_SERVICE} ]; then
-        systemctl stop kube-kube-controller-manager
+        systemctl stop kube-controller-manager
         rm ${CONTROLLER_MANAGER_SERVICE}
     fi
 
