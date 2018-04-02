@@ -35,10 +35,12 @@ EOF
 }
 
 uninstall_docker() {
+    docker system prune -af
+
     if [ -f ${DOCKER_SERVICE} ]; then
         systemctl stop docker
         systemctl daemon-reload
-        rm /etc/systemd/system/docker.service
+        rm ${DOCKER_SERVICE}
     fi
     rm -fr /var/run/docker/
     rm -fr /var/lib/docker/
