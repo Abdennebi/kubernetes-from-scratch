@@ -3,7 +3,7 @@ set -e
 set -o pipefail
 
 DOCKER_VERSION="17.03.2"
-BIN_DIR=/usr/local/bin/
+BIN_DIR=/usr/local/bin
 
 install_docker() {
     local download_url="https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION-ce.tgz"

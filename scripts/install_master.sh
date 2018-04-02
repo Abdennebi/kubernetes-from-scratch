@@ -13,7 +13,7 @@ SERVICE_ACCOUNT_KEY=/var/lib/kubernetes/kubernetes-key.pem
 
 install_service_account_private_key(){
     mkdir -p $(dirname ${SERVICE_ACCOUNT_KEY})
-        cat << EOF > ${SERVICE_ACCOUNT_KEY}
+    cat << EOF > ${SERVICE_ACCOUNT_KEY}
 -----BEGIN RSA PRIVATE KEY-----
 MIIEpAIBAAKCAQEAsP0tuSSOkzBUpbDvAf92XdgqDNBzD2XyKxhX2vKUdm7A5+RG
 ZsEPRr6OrbFecqs9LEELqbU+Uh9zAzTEHdztRD1oj4DeYezx17ZtG7I86Mr03cjQ
@@ -140,8 +140,6 @@ install_master_components() {
     install_api_server
     install_controller_manager
     install_scheduler
-
-    kubectl get componentstatuses
 }
 
 uninstall_master_components(){
