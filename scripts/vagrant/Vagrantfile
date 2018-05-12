@@ -1,0 +1,42 @@
+require 'fileutils'
+
+Vagrant.require_version ">= 2.0.0"
+
+NODE_IP = "172.17.4.99"
+NODE_VCPUS = 1
+NODE_MEMORY_SIZE = 2048
+
+Vagrant.configure("2") do |config|
+  # always use Vagrants insecure key
+  config.ssh.insert_key = false
+  config.vm.box = "bento/ubuntu-16.04"
+  config.ssh.username = "vagrant"
+
+  config.vm.provider :virtualbox do |vb|
+    vb.gui = false
+    vb.memory = NODE_MEMORY_SIZE
+    vb.cpus = NODE_VCPUS
+
+    # On VirtualBox, we don't have guest additions or a functional vboxsf
+    # in CoreOS, so tell Vagrant that so it can be smarter.
+    vb.check_guest_additions = false
+    vb.functional_vboxsf     = false
+  end
+
+    # plugin conflict
+    if Vagrant.has_plugin?("vagrant-vbguest") then
+        config.vbguest.auto_update = false
+    end
+
+    config.vm.network :private_network, ip: NODE_IP
+    config.vm.synced_folder ".", "/vagrant", disabled: true
+
+    config.vm.provision :file, :source => File.expand_path("../docker.sh"), :destination => "/tmp/docker.sh"
+    config.vm.provision :file, :source => File.expand_path("../etcd.sh"), :destination => "/tmp/etcd.sh"
+    config.vm.provision :file, :source => File.expand_path("../install.sh"), :destination => "/tmp/install.sh"
+    config.vm.provision :file, :source => File.expand_path("../master.sh"), :destination => "/tmp/master.sh"
+    config.vm.provision :file, :source => File.expand_path("../worker.sh"), :destination => "/tmp/worker.sh"
+
+    config.vm.provision :shell, :inline => "chmod +x /tmp/install.sh", :privileged => false
+    config.vm.provision :shell, :inline => "./install.sh", :privileged => true
+end
