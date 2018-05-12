@@ -50,10 +50,10 @@ EOF
 download_components(){
     local download_uri="https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64"
 
-    wget "${download_uri}/kube-apiserver" -P ${BIN_DIR}
-    wget "${download_uri}/kube-controller-manager" -P ${BIN_DIR}
-    wget "${download_uri}/kube-scheduler" -P ${BIN_DIR}
-    wget "${download_uri}/kubectl" -P ${BIN_DIR}
+    wget -q -nc "${download_uri}/kube-apiserver" -P ${BIN_DIR}
+    wget -q -nc "${download_uri}/kube-controller-manager" -P ${BIN_DIR}
+    wget -q -nc "${download_uri}/kube-scheduler" -P ${BIN_DIR}
+    wget -q -nc "${download_uri}/kubectl" -P ${BIN_DIR}
 
     chmod +x ${BIN_DIR}/kube*
 }

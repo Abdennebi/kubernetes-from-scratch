@@ -16,8 +16,8 @@ KUBE_PROXY_SERVICE=/etc/systemd/system/kube-proxy.service
 download_worker_components(){
     local download_uri="https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64"
 
-    wget "${download_uri}/kubelet" -P ${BIN_DIR}
-    wget "${download_uri}/kube-proxy" -P ${BIN_DIR}
+    wget -q -nc "${download_uri}/kubelet" -P ${BIN_DIR}
+    wget -q -nc "${download_uri}/kube-proxy" -P ${BIN_DIR}
 
     chmod +x ${BIN_DIR}/kube-proxy ${BIN_DIR}/kubelet
 }

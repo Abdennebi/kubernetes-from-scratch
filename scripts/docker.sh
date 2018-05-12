@@ -30,7 +30,6 @@ EOF
 
     # Show status
     systemctl status docker --no-pager
-    docker info
 
 }
 

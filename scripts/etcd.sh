@@ -14,15 +14,13 @@ install_etcd() {
     # Download etcd distro then copy etcd and etcdctl to /usr/local/bin/
     wget -qO- $download_url | tar -xvz -C $BIN_DIR --wildcards  "etcd-${ETCD_VERSION}-linux-amd64/etcd*" --strip-components=1
 
-    # Etcd's data directory
-    mkdir -p /var/lib/etcd
-
     cat << EOF > ${ETCD_SERVICE}
 [Unit]
 Description=etcd
 Documentation=https://github.com/coreos/etcd
 
 [Service]
+ExecStartPre=/bin/mkdir -p ${ETCD_DATA}
 ExecStart=$BIN_DIR/etcd \
 	--data-dir=${ETCD_DATA}
 Restart=on-failure
