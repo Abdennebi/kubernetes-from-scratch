@@ -2,14 +2,14 @@
 set -e
 set -o pipefail
 
-ETCD_VERSION="v3.1.12"
+ETCD_VERSION="v3.2.24"
 BIN_DIR=/usr/local/bin/
 ETCD_SERVICE=/etc/systemd/system/etcd.service
 ETCD_DATA=/var/lib/etcd/
 
 install_etcd() {
 
-    local download_url="https://github.com/coreos/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz"
+    local download_url="https://github.com/etcd-io/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz"
 
     # Download etcd distro then copy etcd and etcdctl to /usr/local/bin/
     wget -qO- $download_url | tar -xvz -C $BIN_DIR --wildcards  "etcd-${ETCD_VERSION}-linux-amd64/etcd*" --strip-components=1
