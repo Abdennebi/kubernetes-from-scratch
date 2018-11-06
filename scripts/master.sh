@@ -2,7 +2,7 @@
 set -e
 set -o pipefail
 
-KUBERNETES_VERSION="v1.10.0"
+KUBERNETES_VERSION="v1.12.2"
 BIN_DIR=/usr/local/bin
 ETCD_SERVERS=http://localhost:2379
 API_SERVER_URL=http://127.0.0.1:8080

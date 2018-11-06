@@ -2,7 +2,7 @@
 set -e
 set -o pipefail
 
-ETCD_VERSION="v3.1.12"
+ETCD_VERSION="v3.2.24"
 BIN_DIR=/usr/local/bin/
 ETCD_SERVICE=/etc/systemd/system/etcd.service
 ETCD_DATA=/var/lib/etcd/

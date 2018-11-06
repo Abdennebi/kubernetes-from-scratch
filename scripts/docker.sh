@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOCKER_VERSION="17.03.2"
+DOCKER_VERSION="18.06.1"
 BIN_DIR=/usr/local/bin
 DOCKER_SERVICE=/etc/systemd/system/docker.service
 

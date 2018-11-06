@@ -2,7 +2,7 @@
 set -e
 set -o pipefail
 
-KUBERNETES_VERSION="v1.10.0"
+KUBERNETES_VERSION="v1.12.2"
 CNI_VERSION="v0.6.0"
 BIN_DIR="/usr/local/bin"
 KUBE_CONFIG="/var/lib/kubelet/kubeconfig"
