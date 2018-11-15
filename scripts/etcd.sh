@@ -9,26 +9,19 @@ ETCD_DATA=/var/lib/etcd/
 
 install_etcd() {
 
+    mkdir -p /etc/etcd /var/lib/etcd
+    cp templates/etc/etcd/* /etc/etcd/
+
     local download_url="https://github.com/etcd-io/etcd/releases/download/${ETCD_VERSION}/etcd-${ETCD_VERSION}-linux-amd64.tar.gz"
 
     # Download etcd distro then copy etcd and etcdctl to /usr/local/bin/
     wget -qO- $download_url | tar -xvz -C $BIN_DIR --wildcards  "etcd-${ETCD_VERSION}-linux-amd64/etcd*" --strip-components=1
 
-    cat << EOF > ${ETCD_SERVICE}
-[Unit]
-Description=etcd
-Documentation=https://github.com/coreos/etcd
+    ETCD_DATA=${ETCD_DATA} \
+    BIN_DIR=${BIN_DIR} \
+    INTERNAL_IP=127.0.0.1 \
+    envsubst < templates/etc/systemd/system/etcd.service > ${ETCD_SERVICE}
 
-[Service]
-ExecStartPre=/bin/mkdir -p ${ETCD_DATA}
-ExecStart=$BIN_DIR/etcd \
-	--data-dir=${ETCD_DATA}
-Restart=on-failure
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
-EOF
     # Enable and start the service
     systemctl daemon-reload
     systemctl enable etcd
@@ -36,7 +29,7 @@ EOF
 
     # Show status
     systemctl status etcd --no-pager
-    etcdctl cluster-health
+    ETCDCTL_API=3 etcdctl  member list --cacert /etc/etcd/ca.pem
 }
 
 uninstall_etcd() {
