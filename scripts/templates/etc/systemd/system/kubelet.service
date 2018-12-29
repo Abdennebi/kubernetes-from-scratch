@@ -1,0 +1,15 @@
+[Unit]
+Description=Kubernetes Kube Proxy
+Documentation=https://kubernetes.io/docs/reference/generated/kube-proxy/
+
+[Service]
+ExecStart=${BIN_DIR}/kube-proxy \
+--master=${API_SERVER_URL} \
+--proxy-mode=iptables \
+--cluster-cidr=${POD_CLUSTER_IP_RANGE}
+
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
